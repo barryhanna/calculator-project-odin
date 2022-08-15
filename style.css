@@ -68,12 +68,24 @@ button {
     hsl(230, 50%, 70%) 1%,
     hsl(230, 50%, 60%)
   );
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: all 50ms ease-in;
+}
+
+button:hover {
+  transform: translateY(-1px);
 }
 
 button:active {
+  transform: translateY(1px);
+  background: linear-gradient(
+    to bottom,
+    hsl(230, 50%, 60%) 50%,
+    hsl(230, 50%, 70%)
+  );
   box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
