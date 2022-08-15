@@ -42,6 +42,7 @@ h2 {
 .display {
   font-family: '7 Segment';
   font-size: 2rem;
+  height: 2.8rem;
   padding: 0.2em;
   background-color: #bcd6c2;
   text-align: right;

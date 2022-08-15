@@ -9,41 +9,49 @@ const numberList = [];
 let displayNumber = '';
 
 buttons.addEventListener('click', (e) => {
-  // ignore non-button clicks
   const button = e.target.dataset.value;
 
+  // ignore non-button clicks
   if (!button) {
     return;
   }
-  console.log(`${button}`);
+
+  console.log(`${button} clicked`);
+
   if (button === 'clear') {
     clear();
-    return;
-  }
-  if (operations.includes(button)) {
-    operationList.push(button);
-    console.log(`${button} added to operation list`);
-    console.log(`${operationList}`);
-
-    return;
-  }
-
-  if (button === 'equal') {
-  }
-
-  if (digits.includes(button)) {
-    if (numberList > 0) {
-      setDisplay(operate(operationList.pop(), numberList.pop(), getDisplay()));
-    } else {
-      setDisplay(getDisplay() + button);
-    }
+  } else if (operations.includes(button)) {
+    handleOpClick(button);
+  } else if (button === 'equal') {
+    handleEqualClick();
+  } else {
+    setDisplay(getDisplay() + button);
   }
 });
 
-const divide = (num1, num2) => num1 / num2;
+const handleEqualClick = () => {
+  const result = operate(operationList.pop(), numberList.pop(), getDisplay());
+  numberList.push(result);
+  console.log(`${result}`);
+  setDisplay(result);
+};
+
+const handleOpClick = (button) => {
+  if (numberList.length === 0) {
+    return;
+  }
+  const currentNumber = getDisplay();
+  operationList.push(button);
+  numberList.push(currentNumber);
+  displayNumber = currentNumber;
+  logState();
+  setDisplay('');
+};
+
 const add = (num1, num2) => num1 + num2;
 const subtract = (num1, num2) => num1 - num2;
-const multiply = (num1, num2) => num1 / num2;
+const divide = (num1, num2) => num1 / num2;
+const multiply = (num1, num2) => num1 * num2;
 
 const operate = (op, num1, num2) => {
   console.log(`${num1} ${op} ${num2}`);
@@ -64,13 +72,22 @@ const operate = (op, num1, num2) => {
 };
 
 const setDisplay = (str) => {
-  display.textContent = '';
-  displayNumber = Number.parseInt(str);
-  display.textContent = str;
+  if (str) {
+    display.textContent = '';
+    displayNumber = Number.parseInt(str);
+    display.textContent = displayNumber;
+  } else {
+    display.textContent = '';
+  }
+};
+
+const logState = () => {
+  console.log(`Numbers: ${numberList}`);
+  console.log(`Ops: ${operationList}`);
 };
 
 const getDisplay = () => {
   return display.textContent;
 };
 
-const clear = () => setDisplay('0');
+const clear = () => setDisplay('');
