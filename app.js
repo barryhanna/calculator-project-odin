@@ -1,52 +1,55 @@
 const display = document.querySelector('.display');
+const digitButtons = document.querySelectorAll('[data-type="digit"]');
+const opButtons = document.querySelectorAll('[data-type="op"]');
+const equalButton = document.querySelector('[data-type="equal"]');
+const clearButton = document.querySelector('[data-type="clear"]');
 
-const buttons = document.querySelector('.buttons');
-const operations = ['x', '/', '-', '+'];
-const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+let operandOne;
+let operator;
 
-const operationList = [];
-const numberList = [];
-let displayNumber = '';
+const getDisplay = () => display.textContent;
+const setDisplay = (str) => (display.textContent = str);
+const digitHandler = (e) => (display.textContent += e.target.dataset.value);
 
-buttons.addEventListener('click', (e) => {
-  const button = e.target.dataset.value;
+digitButtons.forEach((btn) => btn.addEventListener('click', digitHandler));
 
-  // ignore non-button clicks
-  if (!button) {
-    return;
-  }
+opButtons.forEach((btn) =>
+  btn.addEventListener('click', (e) => {
+    const op = e.target.dataset.value;
 
-  console.log(`${button} clicked`);
+    if (operandOne === undefined && getDisplay() === '') {
+      return;
+    }
 
-  if (button === 'clear') {
-    clear();
-  } else if (operations.includes(button)) {
-    handleOpClick(button);
-  } else if (button === 'equal') {
-    handleEqualClick();
-  } else {
-    setDisplay(getDisplay() + button);
+    // an op button is pressed twice in a row
+    if (operandOne && getDisplay() === '') {
+      operator = op;
+      return;
+    }
+
+    if (operandOne === undefined && getDisplay() !== '') {
+      operandOne = getDisplay();
+      operator = op;
+      setDisplay('');
+      return;
+    }
+
+    if (operandOne && getDisplay() !== '') {
+      operandOne = operate(operator, operandOne, getDisplay());
+      operator = op;
+      setDisplay('');
+      return;
+    }
+  })
+);
+
+equalButton.addEventListener('click', (e) => {
+  if (getDisplay() !== '') {
+    operandOne = operate(operator, operandOne, getDisplay());
+    setDisplay(operandOne);
   }
 });
-
-const handleEqualClick = () => {
-  const result = operate(operationList.pop(), numberList.pop(), getDisplay());
-  numberList.push(result);
-  console.log(`${result}`);
-  setDisplay(result);
-};
-
-const handleOpClick = (button) => {
-  if (numberList.length === 0) {
-    return;
-  }
-  const currentNumber = getDisplay();
-  operationList.push(button);
-  numberList.push(currentNumber);
-  displayNumber = currentNumber;
-  logState();
-  setDisplay('');
-};
+clearButton.addEventListener('click', (e) => {});
 
 const add = (num1, num2) => num1 + num2;
 const subtract = (num1, num2) => num1 - num2;
@@ -55,39 +58,16 @@ const multiply = (num1, num2) => num1 * num2;
 
 const operate = (op, num1, num2) => {
   console.log(`${num1} ${op} ${num2}`);
-  const firstOperand = Number.parseInt(num1);
-  const secondOperand = Number.parseInt(num2);
   switch (op) {
     case '+':
-      return add(firstOperand, secondOperand);
+      return add(Number.parseInt(num1), Number.parseInt(num2));
     case '-':
-      return subtract(firstOperand, secondOperand);
+      return subtract(Number.parseInt(num1), Number.parseInt(num2));
     case '/':
-      return divide(firstOperand, secondOperand);
+      return divide(Number.parseInt(num1), Number.parseInt(num2));
     case 'x':
-      return multiply(firstOperand, secondOperand);
+      return multiply(Number.parseInt(num1), Number.parseInt(num2));
     default:
       return;
   }
 };
-
-const setDisplay = (str) => {
-  if (str) {
-    display.textContent = '';
-    displayNumber = Number.parseInt(str);
-    display.textContent = displayNumber;
-  } else {
-    display.textContent = '';
-  }
-};
-
-const logState = () => {
-  console.log(`Numbers: ${numberList}`);
-  console.log(`Ops: ${operationList}`);
-};
-
-const getDisplay = () => {
-  return display.textContent;
-};
-
-const clear = () => setDisplay('');
