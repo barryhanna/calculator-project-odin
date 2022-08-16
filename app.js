@@ -3,6 +3,7 @@ const digitButtons = document.querySelectorAll('[data-type="digit"]');
 const opButtons = document.querySelectorAll('[data-type="op"]');
 const equalButton = document.querySelector('[data-type="equal"]');
 const clearButton = document.querySelector('[data-type="clear"]');
+const deleteButton = document.querySelector('[data-type="del"]');
 
 let operandOne;
 let operator;
@@ -50,8 +51,12 @@ opButtons.forEach((btn) =>
 
 equalButton.addEventListener('click', (e) => {
   if (getDisplay() !== '' && operandOne) {
-    operandOne = operate(operator, operandOne, getDisplay());
-    setDisplay(Math.round(operandOne, 2));
+    if (getDisplay() === '0') {
+      setDisplay('None of that');
+    } else {
+      operandOne = operate(operator, operandOne, getDisplay());
+      setDisplay(Math.round(operandOne, 2));
+    }
   }
 });
 
@@ -59,6 +64,10 @@ clearButton.addEventListener('click', (e) => {
   operandOne = undefined;
   operator = undefined;
   setDisplay('');
+});
+
+deleteButton.addEventListener('click', () => {
+  display.textContent = display.textContent.slice(0, -1);
 });
 
 const add = (num1, num2) => num1 + num2;
