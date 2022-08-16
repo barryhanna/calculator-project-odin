@@ -40,11 +40,14 @@ h2 {
 }
 
 .display {
+  background-color: #bcd6c2;
   font-family: '7 Segment';
   font-size: 2rem;
   height: 2.8rem;
   padding: 0.2em;
-  background-color: #bcd6c2;
+  width: 239px;
+  overflow: clip;
+  text-overflow: ellipsis;
   text-align: right;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.15);
@@ -74,6 +77,13 @@ button {
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   transition: all 50ms ease-in;
+}
+
+button span {
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
 }
 
 button:hover {

@@ -70,6 +70,82 @@ deleteButton.addEventListener('click', () => {
   display.textContent = display.textContent.slice(0, -1);
 });
 
+const clickNumberButton = (number) => {
+  Array.from(digitButtons)
+    .filter((button) => button.dataset.value === number)[0]
+    .click();
+};
+
+const clickOpButton = (opBtn) => {
+  Array.from(opButtons)
+    .filter((button) => button.dataset.value === opBtn)[0]
+    .click();
+};
+
+document.body.addEventListener('keypress', (e) => {
+  console.log('Key pressed');
+  console.log(e.key);
+  switch (e.key) {
+    case 'd':
+      deleteButton.click();
+      break;
+    case 'c':
+      clearButton.click();
+      break;
+    case '0':
+      clickNumberButton('0');
+      break;
+    case '1':
+      clickNumberButton('1');
+      break;
+    case '2':
+      clickNumberButton('2');
+      break;
+    case '3':
+      clickNumberButton('3');
+      break;
+    case '4':
+      clickNumberButton('4');
+      break;
+    case '5':
+      clickNumberButton('5');
+      break;
+    case '6':
+      clickNumberButton('6');
+      break;
+    case '7':
+      clickNumberButton('7');
+      break;
+    case '8':
+      clickNumberButton('8');
+      break;
+    case '9':
+      clickNumberButton('9');
+      break;
+    case '.':
+      clickNumberButton('.');
+      break;
+    case '/':
+      clickOpButton('/');
+      break;
+    case '-':
+      clickOpButton('-');
+      break;
+    case '+':
+      clickOpButton('+');
+      break;
+    case 'x':
+      clickOpButton('x');
+      break;
+    case '=':
+      equalButton.click();
+      break;
+    case 'Enter':
+      equalButton.click();
+    default:
+  }
+});
+
 const add = (num1, num2) => num1 + num2;
 const subtract = (num1, num2) => num1 - num2;
 const divide = (num1, num2) => num1 / num2;
